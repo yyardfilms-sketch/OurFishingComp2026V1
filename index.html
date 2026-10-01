@@ -30,3 +30,748 @@
 html{-webkit-text-size-adjust:100%}
 body{font-family:"Rubik",system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5;min-height:100vh;padding-bottom:calc(84px + var(--safe-b))}
 button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+[hidden]{display:none!important}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+
+/* ---------- HERO ---------- */
+.hero{background:linear-gradient(180deg,#0E3A4B 0%,var(--deep) 50%,#061A23 100%);color:#fff;position:relative;overflow:hidden}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 16px 0;max-width:760px;margin:0 auto}
+.brand{font-family:"Karantina",sans-serif;font-weight:700;font-size:40px;line-height:.9;letter-spacing:.5px}
+.brand small{display:block;font-family:"Rubik";font-weight:400;font-size:13px;color:var(--spray);letter-spacing:0;margin-top:6px}
+.countdown{text-align:center;background:rgba(255,255,255,.08);border-radius:var(--r-md);padding:8px 12px;min-width:74px;flex:none}
+.countdown b{display:block;font-family:"Karantina";font-size:34px;line-height:.9;color:var(--sun)}
+.countdown span{font-size:12px;color:var(--spray)}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mode,.me{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(245,200,76,.18);color:var(--sun)}
+.mode.live{background:rgba(31,138,91,.25);color:#7DE2B3}
+.mode.live::before{content:"";width:7px;height:7px;border-radius:50%;background:#7DE2B3;animation:pulse 2s infinite}
+.me{background:rgba(255,255,255,.12);color:#fff;font-weight:500}
+.me i{width:8px;height:8px;border-radius:50%}
+@keyframes pulse{50%{opacity:.3}}
+.scene{display:block;width:100%;max-width:760px;margin:4px auto 0;height:auto}
+.scene .nm{font-family:"Karantina";font-weight:700;font-size:30px;fill:#fff}
+.scene .sc{font-family:"Karantina";font-weight:700;font-size:30px;fill:#fff}
+.scene .rk{font-family:"Rubik";font-size:12px;fill:var(--spray)}
+.scene .line{stroke:rgba(255,255,255,.5);stroke-width:1.2;transition:all 1s cubic-bezier(.3,.7,.2,1)}
+.lurepos{transition:transform 1s cubic-bezier(.3,.7,.2,1)}
+.bob{animation:bob 3.2s ease-in-out infinite alternate;transform-origin:0 0}
+@keyframes bob{from{transform:rotate(-4deg)}to{transform:rotate(5deg) translateY(2px)}}
+.wave{animation:drift 9s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(-40px)}}
+@media (prefers-reduced-motion:reduce){.wave,.bob,.mode.live::before{animation:none}.scene .line,.lurepos{transition:none}}
+
+/* ---------- SECTIONS ---------- */
+main{padding-top:20px}
+.view{display:none}
+.view.on{display:block}
+h2{font-family:"Karantina";font-weight:700;font-size:36px;line-height:1;margin:6px 0 14px}
+h3{font-size:17px;font-weight:600;margin:0 0 10px}
+.sub{color:var(--muted);font-size:14px;margin:-8px 0 16px}
+.stand{background:var(--card);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--rule)}
+
+/* standings */
+.prow{padding:16px;border-top:1px solid var(--rule)}
+.prow:first-child{border-top:0}
+.ptop{display:flex;align-items:center;gap:12px}
+.medal{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:"Karantina";font-weight:700;font-size:26px;line-height:1;color:#fff;flex:none;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.m1{background:linear-gradient(160deg,#F7DA7A,#C9971A)}
+.m2{background:linear-gradient(160deg,#EEF2F4,#8E9AA2);color:#33444C}
+.m3{background:linear-gradient(160deg,#EBAE80,#97562A)}
+.m0{background:var(--soft);color:var(--muted);box-shadow:none}
+.pname{font-weight:600;font-size:19px;line-height:1.2}
+.pmeta{font-size:13px;color:var(--muted)}
+.ptotal{margin-inline-start:auto;text-align:left;font-family:"Karantina";font-weight:700;font-size:44px;line-height:.85}
+.ptotal small{display:block;font-family:"Rubik";font-weight:400;font-size:12px;color:var(--muted);margin-top:4px}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--soft);margin:14px 0 10px}
+.bar i{display:block;height:100%}
+.bar i+i{border-inline-start:2px solid var(--card)}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bd .l{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.bd .l i{width:8px;height:8px;border-radius:2px;flex:none}
+.bd .v{font-weight:600;font-size:18px;line-height:1.3}
+.bd .v small{font-weight:400;font-size:12px;color:var(--muted)}
+
+/* highlights */
+.hl{margin-top:22px}
+.hrow{display:grid;grid-template-columns:40px 1fr auto;gap:12px;align-items:center;padding:13px 16px;border-top:1px solid var(--rule)}
+.hrow:first-child{border-top:0}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;font-size:16px}
+.av.none{background:var(--soft);color:var(--muted)}
+.hrow .t{font-size:13px;color:var(--muted);line-height:1.3}
+.hrow .w{font-weight:600;font-size:16px}
+.hrow .big{text-align:left;font-family:"Karantina";font-weight:700;font-size:32px;line-height:.9}
+.hrow .big small{display:block;font-family:"Rubik";font-weight:400;font-size:12px;color:var(--muted);margin-top:3px}
+
+.feed{margin-top:22px}
+.fitem{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.fitem:last-child{border-bottom:0}
+.dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#fff;flex:none;font-size:15px}
+.fitem .meta{color:var(--muted);font-size:13px}
+.fitem .pts{margin-inline-start:auto;font-weight:600;white-space:nowrap}
+
+/* ---------- FORM ---------- */
+.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);padding:18px 16px}
+.field{margin-bottom:18px}
+.field>label,.lbl{display:block;font-weight:600;font-size:15px;margin-bottom:8px}
+.hint{font-weight:400;color:var(--muted);font-size:13px}
+.who{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-md);background:var(--soft);margin-bottom:18px;font-size:15px}
+.who .dot{width:30px;height:30px;font-size:13px}
+.who button{margin-inline-start:auto;font-size:13px;color:var(--muted);text-decoration:underline}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg button{padding:12px 6px;border-radius:var(--r-md);border:1.5px solid var(--rule);font-weight:600;font-size:17px;background:transparent}
+.seg button[aria-pressed="true"]{background:var(--deep);border-color:var(--deep);color:#fff}
+input[type=text],input[type=date],input[type=number],input[type=search],input[type=password],textarea{width:100%;padding:12px 14px;border-radius:var(--r-md);border:1.5px solid var(--rule);background:var(--bg);font-size:16px}
+input:focus,textarea:focus{outline:none;border-color:var(--tide)}
+.species{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;max-height:300px;overflow:auto;padding:2px}
+.sp{display:flex;flex-direction:column;align-items:flex-start;padding:9px 10px;border-radius:var(--r-md);border:1.5px solid var(--rule);text-align:right;background:transparent}
+.sp b{font-weight:500;font-size:15px;line-height:1.2}
+.sp span{font-size:12px;color:var(--muted)}
+.sp[aria-pressed="true"]{border-color:var(--buoy);background:rgba(238,75,43,.08)}
+.sp[aria-pressed="true"] span{color:var(--buoy)}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--rule);border-radius:var(--r-md);overflow:hidden;width:max-content}
+.stepper button{width:52px;height:50px;font-size:24px;font-weight:600}
+.stepper input{width:64px;border:0;border-radius:0;text-align:center;font-weight:600;font-size:20px;background:transparent;padding:0;height:50px}
+.row2{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:end}
+.preview{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-radius:var(--r-md);background:var(--deep);color:#fff;margin:4px 0 16px}
+.preview b{font-family:"Karantina";font-size:38px;line-height:1;color:var(--sun)}
+.btn{display:block;width:100%;padding:15px;border-radius:var(--r-md);background:var(--buoy);color:#fff;font-weight:600;font-size:17px;text-align:center}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--muted);border:1.5px solid var(--rule);margin-top:8px;font-size:15px;padding:11px}
+
+/* ---------- LOG ---------- */
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chips button{padding:8px 16px;border-radius:99px;border:1.5px solid var(--rule);white-space:nowrap;font-weight:500}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.day{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);margin-bottom:12px;overflow:hidden}
+.dayh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;background:rgba(43,138,148,.08)}
+.dayh .d{font-weight:600;display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
+.dayh .dot{width:24px;height:24px;font-size:12px}
+.dayh .t{font-weight:700;white-space:nowrap}
+.counted{font-size:12px;font-weight:600;color:var(--ok)}
+.ent{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:11px 16px;border-top:1px solid var(--rule);min-height:58px}
+.ent .s{font-weight:500}
+.ent .x{font-size:13px;color:var(--muted)}
+.ent .x a{color:var(--tide)}
+.ent .p{font-weight:600}
+.ent .acts{display:flex;gap:2px;min-width:0}
+.icon{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.icon:hover{background:var(--rule)}
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.empty .btn{max-width:240px;margin:16px auto 0}
+
+/* ---------- RECORDS / RULES ---------- */
+.rec{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:12px 16px;border-top:1px solid var(--rule);align-items:center}
+.rec:first-child{border-top:0}
+.rec .s{font-weight:600}
+.rec .b{font-size:13px;color:var(--muted)}
+.rec .len{font-family:"Karantina";font-size:32px;line-height:1;text-align:left}
+.rec .len small{font-family:"Rubik";font-size:12px;color:var(--muted)}
+.rec .by{font-size:13px;grid-column:1/-1;color:var(--muted)}
+.rec .by b{color:var(--ink);font-weight:600}
+.pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:rgba(245,200,76,.25);color:#8A6A00;font-weight:600}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pill{color:var(--sun)}}
+:root[data-theme="dark"] .pill{color:var(--sun)}
+.ptable{width:100%;border-collapse:collapse;font-size:15px}
+.ptable td{padding:9px 16px;border-top:1px solid var(--rule)}
+.ptable tr:first-child td{border-top:0}
+.ptable td:last-child{text-align:left;font-weight:600}
+.block{margin-bottom:26px}
+.ladder{display:flex;gap:6px;flex-wrap:wrap}
+.ladder div{flex:1 1 70px;background:var(--card);border:1px solid var(--rule);border-radius:var(--r-md);padding:10px;text-align:center}
+.ladder b{display:block;font-family:"Karantina";font-size:30px;line-height:1}
+.ladder span{font-size:12px;color:var(--muted)}
+.rules p{margin-bottom:10px}
+
+/* ---------- LOGIN ---------- */
+dialog{border:0;border-radius:var(--r-lg);padding:22px 18px;width:min(92vw,400px);background:var(--card);color:var(--ink);margin:auto}
+dialog::backdrop{background:rgba(6,26,35,.6)}
+dialog h2{margin-top:0}
+.err{color:var(--buoy);font-size:14px;margin:-8px 0 12px;min-height:1px}
+.x{position:absolute;top:14px;left:14px}
+
+/* ---------- NAV ---------- */
+nav.tabs{position:fixed;bottom:0;inset-inline:0;background:var(--card);border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px calc(6px + var(--safe-b));z-index:10}
+nav.tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:12px;color:var(--muted);border-radius:var(--r-md)}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-current="page"]{color:var(--ink);font-weight:600}
+nav.tabs .add i{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--buoy);color:#fff;margin-top:-22px;box-shadow:0 6px 16px rgba(238,75,43,.35)}
+@media(min-width:760px){nav.tabs{max-width:760px;margin:0 auto;border-radius:18px 18px 0 0;border:1px solid var(--rule)}}
+
+.toast{position:fixed;bottom:calc(96px + var(--safe-b));left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:99px;font-weight:500;opacity:0;pointer-events:none;transition:.3s;z-index:20;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="topbar">
+    <div>
+      <div class="brand">תחרות הדייג 2026<small>ראל, ירין ויובל · 10 הימים הטובים + בונוסים</small></div>
+      <div class="chiprow">
+        <span id="mode" class="mode">מצב דמו</span>
+        <button id="meChip" class="me" type="button"></button>
+      </div>
+    </div>
+    <div class="countdown" aria-label="ימים שנשארו"><b id="daysLeft" class="num">0</b><span>ימים נשארו</span></div>
+  </div>
+  <svg id="scene" class="scene" direction="ltr" viewBox="0 0 360 272" role="img" aria-label="מצב התחרות"></svg>
+</header>
+
+<main class="wrap">
+  <!-- HOME -->
+  <section id="v-home" class="view on" aria-labelledby="h-home">
+    <h2 id="h-home">הטבלה</h2>
+    <div id="standings" class="stand"></div>
+    <div class="hl">
+      <h3>שיאי התחרות עד עכשיו</h3>
+      <div id="highlights" class="stand"></div>
+    </div>
+    <div class="feed">
+      <h3>נכנס לאחרונה</h3>
+      <div id="feed"></div>
+    </div>
+  </section>
+
+  <!-- ADD -->
+  <section id="v-add" class="view" aria-labelledby="h-add">
+    <h2 id="h-add">רישום תפיסה</h2>
+    <div id="needLogin" class="card empty" hidden>
+      כדי לרשום תפיסה צריך להתחבר. כל אחד רושם ועורך רק את התפיסות שלו.
+      <button class="btn" type="button" data-login>כניסה</button>
+    </div>
+    <form id="form" class="card" autocomplete="off">
+      <div class="who" id="fWho"></div>
+      <div class="field">
+        <label for="fDate">תאריך</label>
+        <input type="date" id="fDate" min="2026-01-01" max="2026-12-31" required>
+      </div>
+      <div class="field">
+        <span class="lbl">סוג דג</span>
+        <input type="search" id="fSearch" placeholder="חיפוש דג…" aria-label="חיפוש סוג דג" style="margin-bottom:10px">
+        <div class="species" id="fSpecies" role="group" aria-label="סוג דג"></div>
+      </div>
+      <div class="field row2">
+        <div>
+          <span class="lbl">כמות</span>
+          <div class="stepper">
+            <button type="button" id="qPlus" aria-label="הוסף">+</button>
+            <input type="number" id="fQty" value="1" min="1" inputmode="numeric" aria-label="כמות">
+            <button type="button" id="qMinus" aria-label="הורד">−</button>
+          </div>
+        </div>
+        <div>
+          <label for="fLen">אורך (ס״מ) <span class="hint">רק אם נמדד בסרטון</span></label>
+          <input type="number" id="fLen" min="1" step="0.5" inputmode="decimal" placeholder="לא חובה">
+        </div>
+      </div>
+      <div class="field">
+        <label for="fNote">הערה או לינק לסרטון <span class="hint">לא חובה</span></label>
+        <input type="text" id="fNote" placeholder="https://…">
+      </div>
+      <div class="preview"><span id="pvText">בחר דג</span><b id="pvPts" class="num">0</b></div>
+      <button class="btn" id="fSubmit" type="submit" disabled>שמור תפיסה</button>
+      <button class="btn ghost" id="fCancel" type="button" hidden>ביטול עריכה</button>
+    </form>
+  </section>
+
+  <!-- LOG -->
+  <section id="v-log" class="view" aria-labelledby="h-log">
+    <h2 id="h-log">יומן תפיסות</h2>
+    <div class="chips" id="logFilter" role="group" aria-label="סינון לפי דייג"></div>
+    <div id="log"></div>
+  </section>
+
+  <!-- RECORDS -->
+  <section id="v-rec" class="view" aria-labelledby="h-rec">
+    <h2 id="h-rec">שיאי אורך</h2>
+    <p class="sub">הדג הכי ארוך מכל סוג. בונוס רק עם סרטון מדידה, ובתיקו כל המובילים מקבלים אותו.</p>
+    <div id="records" class="stand"></div>
+  </section>
+
+  <!-- RULES -->
+  <section id="v-rules" class="view rules" aria-labelledby="h-rules">
+    <h2 id="h-rules">החוקים</h2>
+    <div class="block">
+      <p>הניקוד של כל דייג הוא סכום 10 ימי הדייג הכי טובים שלו, ועליו מתווספים הבונוסים. יום דייג הוא סכום כל הדגים שנתפסו באותו תאריך. התחרות נגמרת ב־31.12.2026.</p>
+    </div>
+    <div class="block">
+      <h3>ניקוד לדג</h3>
+      <div class="stand"><table class="ptable" id="ptable"></table></div>
+    </div>
+    <div class="block">
+      <h3>בונוס מגוון סוגים</h3>
+      <p class="sub" style="margin:0 0 10px">לפי מספר הסוגים השונים שתפסת לאורך כל התחרות.</p>
+      <div class="ladder" id="ladder"></div>
+    </div>
+    <div class="block">
+      <h3>בונוס הדג הכי ארוך</h3>
+      <div class="stand"><table class="ptable" id="ltable"></table></div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="ניווט">
+  <button data-v="home" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>טבלה</button>
+  <button data-v="log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>יומן</button>
+  <button data-v="add" class="add"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></i><span>תפיסה</span></button>
+  <button data-v="rec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12h20M5 9v6M9 10v4M13 9v6M17 10v4M20 9v6"/></svg>שיאים</button>
+  <button data-v="rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></svg>חוקים</button>
+</nav>
+
+<dialog id="loginDlg" aria-labelledby="h-login">
+  <form id="loginForm" method="dialog">
+    <button class="icon x" type="button" id="loginClose" aria-label="סגירה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 id="h-login">כניסה</h2>
+    <p class="sub" id="loginSub">בחר את השם שלך והכנס את הסיסמה.</p>
+    <div class="field"><div class="seg" id="lName" role="group" aria-label="מי אתה"></div></div>
+    <div class="field" id="lPassWrap">
+      <label for="lPass">סיסמה</label>
+      <input type="password" id="lPass" autocomplete="current-password">
+    </div>
+    <p class="err" id="lErr" role="alert"></p>
+    <button class="btn" id="lGo" type="submit" disabled>כניסה</button>
+  </form>
+</dialog>
+
+<dialog id="acctDlg" aria-labelledby="h-acct">
+  <form id="acctForm" method="dialog">
+    <button class="icon x" type="button" id="acctClose" aria-label="סגירה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <h2 id="h-acct">החשבון שלי</h2>
+    <div class="who" id="aWho"></div>
+    <h3>שינוי סיסמה</h3>
+    <div class="field">
+      <label for="aPass1">סיסמה חדשה <span class="hint">לפחות 6 תווים</span></label>
+      <input type="password" id="aPass1" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label for="aPass2">שוב את הסיסמה החדשה</label>
+      <input type="password" id="aPass2" autocomplete="new-password">
+    </div>
+    <p class="err" id="aErr" role="alert"></p>
+    <button class="btn" id="aSave" type="submit" disabled>שמור סיסמה</button>
+    <button class="btn ghost" id="aLogout" type="button">יציאה מהחשבון</button>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =========================================================
+   הגדרות Supabase – מדביקים כאן את הפרטים מהפרויקט
+   (Project Settings → API). אם ריק – האפליקציה במצב דמו.
+   ========================================================= */
+const SUPABASE_URL = "";
+const SUPABASE_ANON_KEY = "";
+
+/* כל דייג = משתמש ב-Supabase עם המייל הזה (Authentication → Users → Add user) */
+const FISHERS = [
+  {name:"ראל",  color:"#EE4B2B", email:"rael@fishcomp.app",  lure:"minnow"},
+  {name:"ירין", color:"#2B8A94", email:"yarin@fishcomp.app", lure:"jig"},
+  {name:"יובל", color:"#D99A1E", email:"yuval@fishcomp.app", lure:"soft"},
+];
+
+/* ---------------- חוקי התחרות ---------------- */
+const END = new Date("2026-12-31T23:59:59");
+const TOP_DAYS = 10;
+const SPECIES = [
+  ["טונה כחולה",100],["דג חרב",80],["ג'י טי",80],["דוראדו",60],["אינטיאס",60],["בן גוריון",50],
+  ["אריען",40],["מוסר",40],["שורי",30],["טונית",25],["לברק",20],["פלמידה",20],["גומבר",20],
+  ["ברקודה",15],["חלילן",5],["חניתן",5],["טרכון",4],["טרולוס",3],["שטוח ראש הודי",3],["לוקוס",3],
+  ["מרמיר",2],["דניס",1],["מליטה",1],["אוטאוט",1],["סרגוס",1],["מקרוני",1],["קלאמרי",1],["סבידה",1]
+];
+const PTS = Object.fromEntries(SPECIES);
+const DIVERSITY = [[11,300],[10,200],[9,150],[8,125],[7,100],[6,75],[5,50]];
+const LONG_BONUS = {"אינטיאס":150,"דוראדו":125,"בן גוריון":125,"מוסר":125,"אריען":125,"טונית":100,"פלמידה":100,
+  "לברק":75,"גומבר":75,"טרכון":75,"ברקודה":75,"שטוח ראש הודי":50,"חלילן":50,"חניתן":50,"לוקוס":50,"מליטה":25,"סרגוס":25,"דניס":25};
+
+/* ---------------- אחסון וזהות ---------------- */
+const live = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase);
+const db = live ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let catches = [];
+let me = null;
+const LS = "fishcomp-demo", LSME = "fishcomp-demo-me";
+function lsGet(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()+Math.random()));
+const nameByEmail = e => (FISHERS.find(f=>f.email.toLowerCase()===String(e||"").toLowerCase())||{}).name||null;
+
+function demoSeed(){
+  const d=(m,day)=>`2026-${String(m).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+  const rows=[
+    ["ראל",d(9,5),"לברק",2,62],["ראל",d(9,5),"דניס",4,null],["ראל",d(9,12),"אינטיאס",1,88],
+    ["ראל",d(9,19),"סרגוס",6,null],["ראל",d(9,26),"ברקודה",1,71],
+    ["ירין",d(9,6),"פלמידה",3,58],["ירין",d(9,13),"מוסר",1,74],["ירין",d(9,13),"לברק",1,55],
+    ["ירין",d(9,20),"טונית",2,null],["ירין",d(9,27),"דוראדו",1,96],["ירין",d(9,27),"מליטה",3,null],
+    ["יובל",d(9,7),"גומבר",2,null],["יובל",d(9,14),"לברק",1,62],["יובל",d(9,21),"דניס",8,31],["יובל",d(9,28),"חלילן",5,null],
+  ];
+  return rows.map(([fisher,date,species,qty,length],i)=>({id:uid(),fisher,date,species,qty,length,note:null,created_at:new Date(2026,8,5+i).toISOString()}));
+}
+
+async function load(){
+  if(live){
+    const {data,error}=await db.from("catches").select("*").order("date",{ascending:false});
+    if(error){toast("שגיאה בטעינה: "+error.message);return}
+    catches=data||[];
+  }else{
+    catches=lsGet(LS)||demoSeed(); lsSet(LS,catches);
+  }
+  render();
+}
+async function saveCatch(row,id){
+  if(live){
+    const q = id ? db.from("catches").update(row).eq("id",id).select() : db.from("catches").insert(row).select();
+    const {data,error}=await q;
+    if(error||!data||!data.length){toast(error?"לא נשמר: "+error.message:"אין הרשאה לשנות את התפיסה הזו");return false}
+    await load(); return true;
+  }
+  if(id){catches=catches.map(c=>c.id===id?{...c,...row}:c)}
+  else catches.push({...row,id:uid(),created_at:new Date().toISOString()});
+  lsSet(LS,catches); render(); return true;
+}
+async function removeCatch(id){
+  if(live){
+    const {data,error}=await db.from("catches").delete().eq("id",id).select();
+    if(error||!data||!data.length){toast(error?"לא נמחק: "+error.message:"אין הרשאה למחוק את התפיסה הזו");return}
+    await load();
+  } else {catches=catches.filter(c=>c.id!==id); lsSet(LS,catches); render();}
+  toast("התפיסה נמחקה");
+}
+
+async function initAuth(){
+  if(live){
+    const {data}=await db.auth.getSession();
+    me=nameByEmail(data.session&&data.session.user.email);
+    db.auth.onAuthStateChange((_e,session)=>{me=nameByEmail(session&&session.user.email);afterAuth()});
+    db.channel("catches-live").on("postgres_changes",{event:"*",schema:"public",table:"catches"},p=>{
+      if(p.eventType==="INSERT"&&p.new&&p.new.fisher!==me){toast(`${p.new.fisher} רשם ${p.new.species} ×${p.new.qty}`)}
+      load();
+    }).subscribe();
+  } else {
+    me=lsGet(LSME);
+  }
+  afterAuth();
+}
+async function login(name,pass){
+  const f=FISHERS.find(x=>x.name===name);
+  if(live){
+    const {error}=await db.auth.signInWithPassword({email:f.email,password:pass});
+    if(error) return "הסיסמה לא נכונה";
+  } else { me=name; lsSet(LSME,name); afterAuth(); }
+  return null;
+}
+async function logout(){
+  if(live) await db.auth.signOut(); else {me=null; lsSet(LSME,null); afterAuth();}
+  toast("יצאת מהחשבון");
+}
+function afterAuth(){
+  const chip=$("#meChip");
+  if(me){chip.innerHTML=`<i style="background:${colorOf(me)}"></i>${esc(me)} · החשבון שלי`;chip.setAttribute("aria-label",`מחובר בתור ${me}. החשבון שלי`)}
+  else {chip.textContent="כניסה";chip.removeAttribute("aria-label")}
+  $("#needLogin").hidden=!!me; $("#form").hidden=!me;
+  if(!me) form.editing=null;
+  drawWho(); updatePreview(); render();
+}
+
+/* ---------------- חישוב ---------------- */
+function score(c){return (PTS[c.species]||0)*(c.qty||0)}
+function compute(){
+  const res={};
+  for(const f of FISHERS){
+    const rows=catches.filter(c=>c.fisher===f.name);
+    const days={};
+    for(const c of rows){days[c.date]=(days[c.date]||0)+score(c)}
+    const dayList=Object.entries(days).map(([date,pts])=>({date,pts})).sort((a,b)=>b.pts-a.pts||a.date.localeCompare(b.date));
+    const top=dayList.slice(0,TOP_DAYS);
+    const n=new Set(rows.filter(c=>c.qty>0&&PTS[c.species]>0).map(c=>c.species)).size;
+    res[f.name]={f,rows,dayList,top,topSet:new Set(top.map(d=>d.date)),daysPts:top.reduce((s,d)=>s+d.pts,0),
+      speciesN:n,div:(DIVERSITY.find(([k])=>n>=k)||[0,0])[1],longB:0,longWins:[],
+      fishN:rows.reduce((s,c)=>s+(c.qty||0),0),best:dayList[0]||null};
+  }
+  const records=[];
+  for(const [sp] of SPECIES){
+    const per=FISHERS.map(f=>{const L=catches.filter(c=>c.fisher===f.name&&c.species===sp&&c.length>0).map(c=>+c.length);return {name:f.name,len:L.length?Math.max(...L):0}});
+    const max=Math.max(...per.map(p=>p.len));
+    const bonus=LONG_BONUS[sp]||0;
+    if(max<=0){records.push({sp,max:0,holders:[],bonus});continue}
+    const holders=per.filter(p=>p.len===max).map(p=>p.name);
+    const rec=catches.filter(c=>c.species===sp&&+c.length===max&&holders.includes(c.fisher)).sort((a,b)=>a.date.localeCompare(b.date))[0];
+    records.push({sp,max,holders,bonus,date:rec&&rec.date});
+    if(bonus) holders.forEach(h=>{res[h].longB+=bonus;res[h].longWins.push(sp)});
+  }
+  for(const k in res){res[k].total=res[k].daysPts+res[k].div+res[k].longB}
+  const ranked=Object.values(res).sort((a,b)=>b.total-a.total);
+  ranked.forEach((r,i)=>{r.rank=i&&r.total===ranked[i-1].total?ranked[i-1].rank:i+1});
+  return {res,ranked,records};
+}
+
+/* ---------------- עזרים ---------------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const fmtDate=s=>{if(!s)return"";const [y,m,d]=s.split("-");return `${+d}.${+m}`};
+const dayName=s=>new Date(s+"T12:00:00").toLocaleDateString("he-IL",{weekday:"long"});
+const ini=n=>({"ראל":"ר","ירין":"יר","יובל":"יו"}[n]||String(n||"")[0]||"");
+const colorOf=n=>(FISHERS.find(f=>f.name===n)||{}).color||"#888";
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2600)}
+function linkify(s){s=esc(s);return /^https?:\/\//.test(s)?`<a href="${s}" target="_blank" rel="noopener">סרטון</a>`:s}
+const medalCls=r=>r.total>0&&r.rank<=3?"m"+r.rank:"m0";
+
+/* ---------------- דמויים ---------------- */
+// כל דמוי מצויר אופקי, עם נקודת הקשירה ב-(0,0) והאף פונה שמאלה
+function lureSVG(kind,fill){
+  const hook=(x,y)=>`<path d="M${x} ${y} v7 a3.2 3.2 0 1 1 -5 -2.4" fill="none" stroke="#C9D3D8" stroke-width="1.3" stroke-linecap="round"/>`;
+  if(kind==="minnow") return `
+    <path d="M2 2 L-6 9 L-1 10 L6 4Z" fill="rgba(255,255,255,.55)"/>
+    <path d="M4 1 C10 -9 34 -9 46 -2 L52 -6 L50 1 L52 8 L46 4 C34 10 10 10 4 1Z" fill="${fill}" stroke="rgba(0,0,0,.25)" stroke-width=".8"/>
+    <path d="M10 -2 C20 -6 34 -6 44 -1" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="11" cy="-1" r="2.8" fill="#fff"/><circle cx="10.6" cy="-1" r="1.5" fill="#0B2E3C"/>
+    ${hook(18,6)}${hook(36,6)}`;
+  if(kind==="jig") return `
+    <path d="M2 0 C12 -6 40 -6 52 0 C40 5 12 5 2 0Z" fill="${fill}" stroke="rgba(0,0,0,.25)" stroke-width=".8"/>
+    <path d="M8 -1.5 L46 -1.5" stroke="rgba(255,255,255,.7)" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M14 3 L22 -3 M24 3 L32 -3 M34 3 L42 -3" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+    <path d="M2 0 q-3 4 0 8" fill="none" stroke="#E25B3F" stroke-width="1.6"/>
+    ${hook(4,8)}`;
+  return `
+    <circle cx="8" cy="0" r="7" fill="${fill}" stroke="rgba(0,0,0,.25)" stroke-width=".8"/>
+    <circle cx="6" cy="-2" r="2" fill="#fff"/><circle cx="5.7" cy="-2" r="1.1" fill="#0B2E3C"/>
+    <path d="M14 -4 C24 -6 34 -4 42 -1 L48 -6 C52 -2 52 3 48 7 L42 2 C34 5 24 6 14 4Z" fill="${fill}" opacity=".92" stroke="rgba(0,0,0,.2)" stroke-width=".8"/>
+    <path d="M18 -2 L40 -1" stroke="rgba(255,255,255,.5)" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M22 -4 v-5 a3 3 0 0 1 4 -1" fill="none" stroke="#C9D3D8" stroke-width="1.3" stroke-linecap="round"/>`;
+}
+
+/* ---------------- ציור ---------------- */
+function renderScene(C){
+  const max=Math.max(1,...C.ranked.map(r=>r.total));
+  const xs=[270,160,50];
+  let h=`<defs>
+    <linearGradient id="deepg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1C6E7D" stop-opacity=".55"/><stop offset="1" stop-color="#061A23" stop-opacity="0"/></linearGradient>
+    <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBE59A"/><stop offset=".55" stop-color="#E2B12F"/><stop offset="1" stop-color="#A97A0E"/></linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#C3CCD2"/><stop offset="1" stop-color="#7D8A93"/></linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3C29C"/><stop offset=".55" stop-color="#C47A42"/><stop offset="1" stop-color="#7E4520"/></linearGradient>
+    <linearGradient id="g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9BEC4"/><stop offset="1" stop-color="#5E7680"/></linearGradient>
+  </defs>
+  <rect x="0" y="70" width="360" height="200" fill="url(#deepg)"/>
+  <g class="wave"><path d="M-20 70 Q 10 62 40 70 T 100 70 T 160 70 T 220 70 T 280 70 T 340 70 T 400 70 T 460 70 V 78 H -20Z" fill="#2B8A94" opacity=".55"/></g>
+  <line x1="0" y1="70" x2="360" y2="70" stroke="#9FD3D6" stroke-opacity=".35"/>`;
+  for(let y=110;y<=260;y+=38) h+=`<line x1="0" y1="${y}" x2="360" y2="${y}" stroke="#fff" stroke-opacity=".05"/>`;
+  FISHERS.forEach((f,i)=>{
+    const r=C.res[f.name], x=xs[i];
+    const depth=96+(r.total/max)*124;
+    const g=r.total>0&&r.rank<=3?"g"+r.rank:"g0";
+    const rankTxt=r.total>0?["","מקום ראשון","מקום שני","מקום שלישי"][r.rank]:"עוד לא דג";
+    h+=`<g>
+      <text class="nm" x="${x}" y="30" text-anchor="middle">${esc(f.name)}</text>
+      <text class="rk" x="${x}" y="48" text-anchor="middle">${rankTxt}</text>
+      <line class="line" x1="${x}" y1="56" x2="${x}" y2="${depth}"/>
+      <g class="lurepos" style="transform:translate(${x}px,${depth}px)">
+        <g class="bob" style="animation-delay:${-i*1.1}s"><g transform="scale(1.45)">${lureSVG(f.lure,`url(#${g})`)}</g></g>
+        <text class="sc num" x="36" y="48" text-anchor="middle" ${r.rank===1&&r.total>0?'style="fill:#F5C84C"':''}>${r.total}</text>
+      </g>
+    </g>`;
+  });
+  $("#scene").innerHTML=h;
+}
+
+function renderHome(C){
+  const leader=C.ranked[0];
+  $("#standings").innerHTML=C.ranked.map(r=>{
+    const parts=[[r.daysPts,"var(--seg1)"],[r.div,"var(--seg2)"],[r.longB,"var(--seg3)"]];
+    const gap=leader.total-r.total;
+    const meta=[`${r.dayList.length} ימי דייג`,`${r.fishN} דגים`];
+    if(r.rank>1&&leader.total>0) meta.push(`${gap} נק׳ מאחורי ${leader.f.name}`);
+    return `<div class="prow">
+      <div class="ptop">
+        <div class="medal ${medalCls(r)} num">${r.rank}</div>
+        <div><div class="pname">${esc(r.f.name)}</div><div class="pmeta">${esc(meta.join(" · "))}</div></div>
+        <div class="ptotal num">${r.total}<small>נקודות</small></div>
+      </div>
+      <div class="bar" aria-hidden="true">${r.total>0?parts.filter(p=>p[0]>0).map(([v,c])=>`<i style="width:${v/r.total*100}%;background:${c}"></i>`).join(""):""}</div>
+      <div class="breakdown">
+        <div class="bd"><div class="l"><i style="background:var(--seg1)"></i>10 הימים הטובים</div><div class="v num">${r.daysPts}</div></div>
+        <div class="bd"><div class="l"><i style="background:var(--seg2)"></i>בונוס מגוון</div><div class="v num">${r.div} <small>${r.speciesN} סוגים</small></div></div>
+        <div class="bd"><div class="l"><i style="background:var(--seg3)"></i>בונוס שיאים</div><div class="v num">${r.longB} <small>${r.longWins.length} שיאים</small></div></div>
+      </div>
+    </div>`}).join("");
+
+  const all=C.ranked;
+  const bestDay=all.filter(r=>r.best).map(r=>({...r.best,who:r.f.name})).sort((a,b)=>b.pts-a.pts)[0];
+  const mostSp=[...all].sort((a,b)=>b.speciesN-a.speciesN)[0];
+  const mostFish=[...all].sort((a,b)=>b.fishN-a.fishN)[0];
+  const bigRec=C.records.filter(r=>r.max>0).sort((a,b)=>(b.bonus-a.bonus)||(b.max-a.max))[0];
+  const av=n=>n?`<div class="av" style="background:${colorOf(n)}">${esc(ini(n))}</div>`:`<div class="av none">–</div>`;
+  const row=(who,title,sub,big,unit)=>`<div class="hrow">${av(who)}<div><div class="t">${title}</div><div class="w">${who?esc(who):"עוד אין"}${sub?` <span class="t">· ${sub}</span>`:""}</div></div><div class="big num">${who?big:""}<small>${who?unit:""}</small></div></div>`;
+  $("#highlights").innerHTML=
+    row(bestDay&&bestDay.who,"היום הכי טוב",bestDay?`${dayName(bestDay.date)} ${fmtDate(bestDay.date)}`:"",bestDay&&bestDay.pts,"נקודות")+
+    row(bigRec&&bigRec.holders.join(" ו"),"שיא האורך הכי שווה",bigRec?esc(bigRec.sp):"",bigRec&&bigRec.max,"ס״מ")+
+    row(mostSp&&mostSp.speciesN?mostSp.f.name:null,"הכי הרבה סוגים","",mostSp&&mostSp.speciesN,"סוגים")+
+    row(mostFish&&mostFish.fishN?mostFish.f.name:null,"הכי הרבה דגים","",mostFish&&mostFish.fishN,"דגים");
+
+  const recent=[...catches].sort((a,b)=>(b.created_at||"").localeCompare(a.created_at||"")).slice(0,6);
+  $("#feed").innerHTML=recent.length?recent.map(c=>`
+    <div class="fitem"><div class="dot" style="background:${colorOf(c.fisher)}">${esc(ini(c.fisher))}</div>
+      <div><div><b>${esc(c.fisher)}</b> · ${esc(c.species)} ×${c.qty}${c.length?` · ${c.length} ס״מ`:""}</div><div class="meta">${dayName(c.date)} ${fmtDate(c.date)}</div></div>
+      <div class="pts num" dir="ltr">+${score(c)}</div></div>`).join("")
+    :`<div class="empty">היומן ריק. התפיסה הראשונה פותחת את הטבלה.<button class="btn" onclick="go('add')">רישום תפיסה</button></div>`;
+}
+
+let logFilter="הכל";
+function renderLog(C){
+  $("#logFilter").innerHTML=["הכל",...FISHERS.map(f=>f.name)].map(n=>`<button aria-pressed="${n===logFilter}" data-f="${esc(n)}">${esc(n)}</button>`).join("");
+  const rows=catches.filter(c=>logFilter==="הכל"||c.fisher===logFilter);
+  if(!rows.length){$("#log").innerHTML=`<div class="empty">אין עדיין תפיסות${logFilter!=="הכל"?" ל"+esc(logFilter):""}.</div>`;return}
+  const groups={};
+  for(const c of rows){const k=c.date+"|"+c.fisher;(groups[k]=groups[k]||[]).push(c)}
+  const keys=Object.keys(groups).sort((a,b)=>b.localeCompare(a));
+  $("#log").innerHTML=keys.map(k=>{
+    const [date,fisher]=k.split("|"); const list=groups[k];
+    const tot=list.reduce((s,c)=>s+score(c),0);
+    const counted=C.res[fisher]&&C.res[fisher].topSet.has(date);
+    const mine=fisher===me;
+    return `<div class="day"><div class="dayh"><div class="d"><span class="dot" style="background:${colorOf(fisher)}">${esc(ini(fisher))}</span>${esc(fisher)} · ${dayName(date)} ${fmtDate(date)}${counted?`<span class="counted">נספר ב־10</span>`:""}</div><div class="t num">${tot} נק׳</div></div>
+      ${list.map(c=>`<div class="ent"><div><div class="s">${esc(c.species)} ×${c.qty}</div>${(c.length||c.note)?`<div class="x">${c.length?c.length+" ס״מ":""}${c.length&&c.note?" · ":""}${c.note?linkify(c.note):""}</div>`:""}</div>
+        <div class="p num">${score(c)}</div>
+        <div class="acts">${mine?`<button class="icon" aria-label="עריכה" data-edit="${esc(c.id)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg></button>
+        <button class="icon" aria-label="מחיקה" data-del="${esc(c.id)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button>`:""}</div></div>`).join("")}
+    </div>`}).join("");
+}
+
+function renderRecords(C){
+  const order=s=>SPECIES.findIndex(x=>x[0]===s);
+  const list=[...C.records].sort((a,b)=>(b.max>0)-(a.max>0)||b.bonus-a.bonus||order(a.sp)-order(b.sp));
+  $("#records").innerHTML=list.map(r=>`
+    <div class="rec"><div><div class="s">${esc(r.sp)}</div><div class="b">${r.bonus?`<span class="pill">בונוס ${r.bonus}</span>`:"בלי בונוס"}</div></div>
+      <div class="len num">${r.max?`${r.max}<small> ס״מ</small>`:`<small>אין מדידה</small>`}</div>
+      ${r.max?`<div class="by"><b>${esc(r.holders.join(" ו"))}</b>${r.holders.length>1?" (תיקו)":""} · ${fmtDate(r.date)}</div>`:""}
+    </div>`).join("");
+}
+
+function renderRules(){
+  $("#ptable").innerHTML=SPECIES.map(([s,p])=>`<tr><td>${esc(s)}</td><td class="num">${p}</td></tr>`).join("");
+  $("#ladder").innerHTML=[...DIVERSITY].reverse().map(([k,b])=>`<div><b class="num">${b}</b><span>${k}${k===11?"+":""} סוגים</span></div>`).join("");
+  $("#ltable").innerHTML=Object.entries(LONG_BONUS).map(([s,b])=>`<tr><td>${esc(s)}</td><td class="num">${b}</td></tr>`).join("");
+}
+
+function render(){
+  const C=compute();
+  renderScene(C); renderHome(C); renderLog(C); renderRecords(C);
+  $("#daysLeft").textContent=Math.max(0,Math.ceil((END-new Date())/864e5));
+}
+
+/* ---------------- ניווט ---------------- */
+function go(v){
+  document.querySelectorAll(".view").forEach(s=>s.classList.toggle("on",s.id==="v-"+v));
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.dataset.v===v?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  window.scrollTo({top:v==="home"?0:document.querySelector("main").offsetTop-10,behavior:"smooth"});
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>{if(b.dataset.v!=="add")resetForm(); go(b.dataset.v)});
+
+/* ---------------- כניסה ---------------- */
+let loginName="";
+function openLogin(){
+  loginName=""; $("#lPass").value=""; $("#lErr").textContent="";
+  $("#lPassWrap").hidden=!live;
+  $("#loginSub").textContent=live?"בחר את השם שלך והכנס את הסיסמה.":"במצב דמו אין סיסמה. בחר שם כדי לנסות.";
+  drawLoginNames(); $("#loginDlg").showModal();
+}
+function drawLoginNames(){
+  $("#lName").innerHTML=FISHERS.map(f=>`<button type="button" aria-pressed="${f.name===loginName}" data-n="${esc(f.name)}">${esc(f.name)}</button>`).join("");
+  $("#lGo").disabled=!loginName||(live&&!$("#lPass").value);
+}
+$("#lName").onclick=e=>{const b=e.target.closest("button");if(!b)return;loginName=b.dataset.n;drawLoginNames();if(live)$("#lPass").focus()};
+$("#lPass").oninput=drawLoginNames;
+$("#loginClose").onclick=()=>$("#loginDlg").close();
+$("#loginForm").onsubmit=async e=>{
+  e.preventDefault(); $("#lGo").disabled=true; $("#lErr").textContent="";
+  const err=await login(loginName,$("#lPass").value);
+  if(err){$("#lErr").textContent=err;$("#lGo").disabled=false;return}
+  $("#loginDlg").close(); toast(`שלום ${loginName}`);
+};
+$("#meChip").onclick=()=>{me?openAcct():openLogin()};
+function openAcct(){
+  $("#aWho").innerHTML=`<span class="dot" style="background:${colorOf(me)}">${esc(ini(me))}</span><span>מחובר בתור <b>${esc(me)}</b></span>`;
+  $("#aPass1").value="";$("#aPass2").value="";$("#aErr").textContent="";$("#aSave").disabled=true;
+  $("#acctDlg").showModal();
+}
+function checkAcct(){
+  const a=$("#aPass1").value,b=$("#aPass2").value;
+  let err="";
+  if(a&&a.length<6) err="הסיסמה קצרה מדי, צריך לפחות 6 תווים";
+  else if(b&&a!==b) err="הסיסמאות לא זהות";
+  $("#aErr").textContent=err; $("#aSave").disabled=!!err||!a||a!==b;
+}
+$("#aPass1").oninput=checkAcct; $("#aPass2").oninput=checkAcct;
+$("#acctClose").onclick=()=>$("#acctDlg").close();
+$("#aLogout").onclick=()=>{$("#acctDlg").close();logout()};
+$("#acctForm").onsubmit=async e=>{
+  e.preventDefault(); $("#aSave").disabled=true;
+  if(live){
+    const {error}=await db.auth.updateUser({password:$("#aPass1").value});
+    if(error){$("#aErr").textContent="הסיסמה לא שונתה: "+error.message;$("#aSave").disabled=false;return}
+  }
+  $("#acctDlg").close(); toast(live?"הסיסמה שונתה":"במצב דמו אין סיסמאות, בלייב זה יעבוד");
+};
+document.querySelectorAll("[data-login]").forEach(b=>b.onclick=openLogin);
+
+/* ---------------- טופס ---------------- */
+const form={species:"",editing:null};
+function todayISO(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function drawWho(){
+  $("#fWho").innerHTML=me?`<span class="dot" style="background:${colorOf(me)}">${esc(ini(me))}</span><span>נרשם על שם <b>${esc(me)}</b></span><button type="button" id="notMe">זה לא אני</button>`:"";
+  const nm=$("#notMe"); if(nm) nm.onclick=()=>logout();
+}
+function drawSpecies(){
+  const q=$("#fSearch").value.trim();
+  $("#fSpecies").innerHTML=SPECIES.filter(([s])=>!q||s.includes(q)).map(([s,p])=>`<button type="button" class="sp" aria-pressed="${s===form.species}" data-s="${esc(s)}"><b>${esc(s)}</b><span>${p} נק׳${LONG_BONUS[s]?" · שיא":""}</span></button>`).join("")||`<div class="hint">לא נמצא דג כזה ברשימה</div>`;
+}
+function updatePreview(){
+  const q=Math.max(1,parseInt($("#fQty").value)||1);
+  $("#pvText").textContent=form.species?`${form.species} ×${q}`:"בחר דג";
+  $("#pvPts").textContent=(PTS[form.species]||0)*q;
+  $("#fSubmit").disabled=!(me&&form.species&&$("#fDate").value);
+  $("#fSubmit").textContent=form.editing?"שמור שינויים":"שמור תפיסה";
+}
+function resetForm(){
+  form.species="";form.editing=null;
+  $("#fDate").value=todayISO()>"2026-12-31"?"2026-12-31":todayISO();
+  $("#fQty").value=1;$("#fLen").value="";$("#fNote").value="";$("#fSearch").value="";
+  $("#fCancel").hidden=true; drawSpecies(); updatePreview();
+}
+$("#fSpecies").onclick=e=>{const b=e.target.closest(".sp");if(!b)return;form.species=b.dataset.s;drawSpecies();updatePreview()};
+$("#fSearch").oninput=drawSpecies;
+$("#qPlus").onclick=()=>{$("#fQty").value=(parseInt($("#fQty").value)||0)+1;updatePreview()};
+$("#qMinus").onclick=()=>{$("#fQty").value=Math.max(1,(parseInt($("#fQty").value)||1)-1);updatePreview()};
+$("#fQty").oninput=updatePreview; $("#fDate").oninput=updatePreview;
+$("#fCancel").onclick=()=>{resetForm();go("log")};
+$("#form").onsubmit=async e=>{
+  e.preventDefault();
+  if(!me){openLogin();return}
+  const d=$("#fDate").value;
+  if(d>"2026-12-31"){toast("התחרות נגמרת ב־31.12.2026");return}
+  const len=parseFloat($("#fLen").value);
+  const row={fisher:me,date:d,species:form.species,qty:Math.max(1,parseInt($("#fQty").value)||1),length:len>0?len:null,note:$("#fNote").value.trim()||null};
+  $("#fSubmit").disabled=true;
+  const wasEdit=!!form.editing;
+  const ok=await saveCatch(row,form.editing);
+  if(ok){toast(wasEdit?"השינויים נשמרו":`נשמר: ${row.species} ×${row.qty} · +${score(row)} נק׳`);resetForm();go(wasEdit?"log":"home")}
+  else updatePreview();
+};
+
+$("#logFilter").onclick=e=>{const b=e.target.closest("button");if(!b)return;logFilter=b.dataset.f;renderLog(compute())};
+$("#log").onclick=e=>{
+  const del=e.target.closest("[data-del]"), ed=e.target.closest("[data-edit]");
+  if(del){const c=catches.find(x=>x.id===del.dataset.del);if(c&&c.fisher===me&&confirm(`למחוק ${c.species} ×${c.qty}?`))removeCatch(c.id)}
+  if(ed){const c=catches.find(x=>x.id===ed.dataset.edit);if(!c||c.fisher!==me)return;
+    form.editing=c.id;form.species=c.species;
+    $("#fDate").value=c.date;$("#fQty").value=c.qty;$("#fLen").value=c.length||"";$("#fNote").value=c.note||"";$("#fSearch").value="";
+    $("#fCancel").hidden=false;drawSpecies();updatePreview();go("add")}
+};
+
+/* ---------------- התחלה ---------------- */
+const m=$("#mode"); if(live){m.textContent="לייב";m.classList.add("live")}else{m.textContent="מצב דמו · נתוני דוגמה"}
+renderRules(); resetForm(); initAuth().then(load);
+</script>
+</body>
+</html>
